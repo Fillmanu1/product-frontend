@@ -35,7 +35,7 @@ export default function CreateProduct() {
     }
 
     try {
-      const res = await fetch('https://product-frontend-alpha.vercel.app/product', {
+      const res = await fetch('https://product-backend-pi.vercel.app/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price: Number(price), description }),

@@ -13,16 +13,18 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [charCount, setCharCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`https://product-frontend-alpha.vercel.app/product/${id}`);
+        const res = await fetch(`https://product-backend-pi.vercel.app/products/${id}`);
         if (res.ok) {
           const data = await res.json();
           setName(data.name);
           setPrice(data.price);
           setDescription(data.description);
+          setCharCount(data.description.length);
         } else {
           alert('ไม่พบสินค้านี้');
           router.push('/product');
@@ -41,8 +43,13 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
     e.preventDefault();
     setErrorMessage(null);
 
+    if (description.length > 100) {
+      setErrorMessage('รายละเอียดต้องไม่เกิน 100 ตัวอักษร');
+      return;
+    }
+
     try {
-      const res = await fetch(`https://product-frontend-alpha.vercel.app/product/${id}`, {
+      const res = await fetch(`https://product-backend-pi.vercel.app/products/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price: Number(price), description }),
@@ -146,11 +153,16 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
                 </label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                    setCharCount(e.target.value.length);
+                  }}
                   rows={4}
+                  maxLength={100}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
                   placeholder="กรอกรายละเอียดสินค้า (ถ้ามี)"
                 />
+                <p className="text-sm text-gray-500 mt-1">{charCount}/100 ตัวอักษร</p>
               </div>
 
               {/* Action Buttons */}
