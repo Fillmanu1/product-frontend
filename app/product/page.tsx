@@ -7,7 +7,7 @@ import { Product } from '@/types/product';
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const API_URL = 'http://localhost:3000/products';
+  const API_URL = 'https://product-backend-pi.vercel.app/products';
 
   useEffect(() => {
     fetchProducts();
