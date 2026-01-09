@@ -12,14 +12,30 @@ export default function CreateProduct() {
   const [description, setDescription] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setIsSubmitting(true);
 
+    // Validation
+    const priceNum = Number(price);
+    if (priceNum < 0 || priceNum > 10000) {
+      setErrorMessage('ราคาต้องอยู่ระหว่าง 0 ถึง 10,000 บาท');
+      setIsSubmitting(false);
+      return;
+    }
+
+    const wordCount = description.split(/\s+/).filter(word => word.length > 0).length;
+    if (wordCount > 100) {
+      setErrorMessage('รายละเอียดต้องไม่เกิน 100 คำ');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const res = await fetch('http://localhost:3000/products', {
+      const res = await fetch('https://product-frontend-alpha.vercel.app/product', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price: Number(price), description }),
@@ -104,6 +120,8 @@ export default function CreateProduct() {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   required
+                  min="0"
+                  max="10000"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
                   placeholder="0.00"
                   step="0.01"
@@ -117,11 +135,15 @@ export default function CreateProduct() {
                 </label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                    setWordCount(e.target.value.split(/\s+/).filter(word => word.length > 0).length);
+                  }}
                   rows={4}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition resize-none"
                   placeholder="กรอกรายละเอียดสินค้า (ถ้ามี)"
                 />
+                <p className="text-sm text-gray-500 mt-1">{wordCount}/100 คำ</p>
               </div>
 
               {/* Action Buttons */}

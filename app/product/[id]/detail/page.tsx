@@ -14,7 +14,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/products/${id}`);
+        const res = await fetch(`https://product-frontend-alpha.vercel.app/product/${id}`);
         if (res.ok) {
           const data = await res.json();
           setProduct(data);
@@ -36,7 +36,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     if (!confirm('คุณต้องการลบสินค้านี้ใช่หรือไม่?')) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/products/${id}`, {
+      const res = await fetch(`https://product-frontend-alpha.vercel.app/product/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {

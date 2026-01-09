@@ -17,7 +17,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/products/${id}`);
+        const res = await fetch(`https://product-frontend-alpha.vercel.app/product/${id}`);
         if (res.ok) {
           const data = await res.json();
           setName(data.name);
@@ -42,7 +42,7 @@ export default function EditProduct({ params }: { params: Promise<{ id: string }
     setErrorMessage(null);
 
     try {
-      const res = await fetch(`http://localhost:3000/products/${id}`, {
+      const res = await fetch(`https://product-frontend-alpha.vercel.app/product/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, price: Number(price), description }),
