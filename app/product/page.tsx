@@ -121,7 +121,7 @@ export default function ProductList() {
                       href={`/product/${p.id}/detail`}
                       className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 rounded-lg transition text-center text-sm"
                     >
-                      👁️ ดู
+                       ดู
                     </Link>
                     <Link 
                       href={`/product/${p.id}`}

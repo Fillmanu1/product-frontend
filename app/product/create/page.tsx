@@ -12,7 +12,7 @@ export default function CreateProduct() {
   const [description, setDescription] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [wordCount, setWordCount] = useState(0);
+  const [charCount, setCharCount] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,8 +28,8 @@ export default function CreateProduct() {
     }
 
     const wordCount = description.split(/\s+/).filter(word => word.length > 0).length;
-    if (wordCount > 100) {
-      setErrorMessage('รายละเอียดต้องไม่เกิน 100 คำ');
+    if (description.length > 100) {
+      setErrorMessage('รายละเอียดต้องไม่เกิน 100 ตัวอักษร');
       setIsSubmitting(false);
       return;
     }
@@ -137,13 +137,14 @@ export default function CreateProduct() {
                   value={description}
                   onChange={(e) => {
                     setDescription(e.target.value);
-                    setWordCount(e.target.value.split(/\s+/).filter(word => word.length > 0).length);
+                    setCharCount(e.target.value.length);
                   }}
                   rows={4}
+                  maxLength={100}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition resize-none"
                   placeholder="กรอกรายละเอียดสินค้า (ถ้ามี)"
                 />
-                <p className="text-sm text-gray-500 mt-1">{wordCount}/100 คำ</p>
+                <p className="text-sm text-gray-500 mt-1">{charCount}/100 ตัวอักษร</p>
               </div>
 
               {/* Action Buttons */}
